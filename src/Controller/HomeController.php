@@ -23,6 +23,7 @@ final class HomeController {
     #[Route('/', name: 'app_home', methods: ['GET'])]
     public function index(): Response {
         $projectName = 'IssueFlow';
+        $message = 'Symfony ha recibido la peticion y ha devuelto un response';
 
         // Creamos una variable que contiene el documento html
         $html = <<<HTML
@@ -34,7 +35,12 @@ final class HomeController {
                 <title>{$projectName}</title>
             </head>
             <body>
-                <h1>{$projectName}</h1>
+                <main>
+                    <h1>{$projectName}</h1>
+                    <p>{$message}</p>
+                    <p><a href="/tickets">Ver incidencias</a></p>
+                    <p><a href="/health">Comprobar estado</a></p>
+                </main>
             </body>
             </html>
         HTML;
@@ -42,4 +48,10 @@ final class HomeController {
         // Retornamos la respuesta
         return new Response($html, Response::HTTP_OK);
     }
+    
+    #[Route('/health', name: 'app_health', methods: ['GET'])]
+    public function health(): Response {
+        return new Response('IssueFlow OK', Response::HTTP_OK, ['Content-Type' => 'text/plain']);
+        
+    } 
 }
