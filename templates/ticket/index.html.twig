@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Incidencias - IssueFlow{% endblock %}
+
+{% block body %}
+    <h1>Incidencias</h1>
+    <p>Total: <strong>{{ tickets|length }}</strong></p>
+
+    <figure>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Prioridad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ ticket.id }}</td>
+                        <td>{{ ticket.title }}</td>
+                        <td>
+                            <span class="badge badge-{{ ticket.priority }}">
+                                {{ ticket.priority|capitalize }}
+                            </span>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="3">No hay incidencias.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </figure>
+{% endblock %}
