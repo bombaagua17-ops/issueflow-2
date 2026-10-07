@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class TicketController
+final class TicketController extends AbstractController
 {
     /* En este ejemplo, los tickets se definen de forma estática. 
         En un caso real, se obtendrían de una base de datos. */
@@ -31,7 +32,7 @@ final class TicketController
         $total = count(self::TICKETS);
 
         foreach (self::TICKETS as $ticket) {
-            $items .= "<li>{$ticket['id']}: {$ticket['title']} ({$ticket['priority']})</li>";
+            $items = "<li>{$ticket['id']}: {$ticket['title']} ({$ticket['priority']})</li>";
         }
         /*
         Esto es lo que sucede en cada iteración del bucle foreach:
@@ -72,13 +73,40 @@ final class TicketController
     // Ruta dinámica para mostrar un ticket específico por su ID.
     #[Route('/tickets/{id}', name:"app_ticket_show", methods: ['GET'])]
     public function show(string $id) {
+
         $ticket = null;
+
         foreach(self::TICKETS as $candidate) {
             if ($candidate['id'] === $id) {
                 $ticket = $candidate;
                 break;
             }
         }
+        
+
+        // En este punto del código, si $ticket sigue siendo null, significa que no se encontró ningún ticket con el ID proporcionado.
+        // Si es null, voy a lanzar un error / excepción 404: Not found
+        if ($ticket === null) {
+            $html = <<<HTML
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Ticket no existe</title>
+            </head>
+            <body>
+                <h1>ups... la pagina solicitada no existe</h1>
+                <h1>******* Error 404 *******</h2>
+                <p><a heref="/tickets">ver incidencias</a><p>
+                
+            </body>
+            </html>
+            HTML;
+
+            return new Response($html, Response::HTTP_NOT_FOUND);
+        }
+
         $html = <<<HTML
         <!DOCTYPE html>
         <html lang="es">
@@ -95,7 +123,9 @@ final class TicketController
         </body>
         </html>
         HTML;
-        
+
+
+        return new Response($html, Response::HTTP_OK);
         
     }
 
