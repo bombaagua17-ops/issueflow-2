@@ -1,35 +1,39 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}IssueFlow{% endblock %}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <style>
-        .badge { padding: .15rem .6rem; border-radius: 999px; font-size: .8rem; color: #fff; }
-        .badge-urgent { background: #d32f2f; }
-        .badge-high { background: #ef6c00; }
-        .badge-normal { background: #607d8b; }
-    </style>
-</head>
-<body>
-    <header class="container">
-        <nav>
-            <ul><li><strong>IssueFlow</strong></li></ul>
-            <ul>
-                <li><a href="{{ path('app_home') }}">Inicio</a></li>
-                <li><a href="{{ path('app_ticket_index') }}">Incidencias</a></li>
-                <li><a href="{{ path('app_health') }}">Estado</a></li>
-            </ul>
-        </nav>
-    </header>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}IssueFlow!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
 
-    <main class="container">
-        {% block body %}{% endblock %}
-    </main>
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
 
-    <footer class="container">
-        <small>IssueFlow &middot; Proyecto de práctica con Symfony</small>
-    </footer>
-</body>
+        {% set frankenphp_hot_reload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
+        {% if frankenphp_hot_reload %}
+        <meta name="frankenphp-hot-reload:url" content="{{ frankenphp_hot_reload }}">
+        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
+        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
+        {% endif %}
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container header-inner">
+                <a>class="brand" href="{{ path('app_home') }}">IssueFlow</a>
+                <nav aria-label="Navegacion principal">
+                    <a heref="app_home"></a>
+                    <a heref="app_ticket_index"></a>
+                    <a heref="app_health"></a>
+                    </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="container">
+               {% block body %}{% endlock %}
+            </div>
+    </body>
 </html>

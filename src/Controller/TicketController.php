@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class TicketController extends AbstractController
@@ -98,7 +99,7 @@ final class TicketController extends AbstractController
             <body>
                 <h1>ups... la pagina solicitada no existe</h1>
                 <h1>******* Error 404 *******</h2>
-                <p><a heref="/tickets">ver incidencias</a><p>
+                <p><a heref="/tickets">ver incidencias</a></p>
                 
             </body>
             </html>
@@ -106,6 +107,8 @@ final class TicketController extends AbstractController
 
             return new Response($html, Response::HTTP_NOT_FOUND);
         }
+
+        $view = $request->query->get('view', 'full');
 
         $html = <<<HTML
         <!DOCTYPE html>
