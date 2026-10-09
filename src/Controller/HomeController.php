@@ -9,10 +9,19 @@ use Symfony\Component\HttpFoundation\Response;
 // Clase de symfony para definir las rutas
 use Symfony\Component\Routing\Attribute\Route;
 // Clase de symfony para asociar un método del controlador con una plantilla Twig
-use Symfony\Bridge\Twig\Attribute\Template;
+/* Template: Clase de symfony para asociar un método del controlador con una plantilla Twig,
+   de manera que el método devuelva un array con los datos a renderizar en la plantilla 
+    Lo necesitamos para poder usar la anotación #[Template('ruta/plantilla.html.twig')] 
+    en el método del controlador, y que Twig renderice la plantilla con los datos 
+    devueltos por el método
+*/
+//use Symfony\Bridge\Twig\Attribute\Template;
 
-// Clase controlador HomeController
-final class HomeController {
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+
+final class HomeController extends AbstractController {
 
     /* Definimos una ruta para este controlador.
     La ruta será la de home: '/' -> 1er argumento
@@ -23,12 +32,12 @@ final class HomeController {
     un objeto de la clase Response
     */
     #[Route('/', name: 'app_home', methods: ['GET'])]
-    #[Template('home/index.html.twig')]
-    public function index(): array {
-        return [
+    //#[Template('home/index.html.twig')]
+    public function index(): Response {
+        return $this->render('home/index.html.twig', [
             'projectName' => 'IssueFlow',
             'message' => 'Symfony 8.1 ha resuelto la ruta y Twig ha construido la vista'
-        ];
+        ]);
     }
 
     /* Definimos una segunda ruta para este controlador.
