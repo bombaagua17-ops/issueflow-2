@@ -1,0 +1,28 @@
+{#  Esta plantilla hereda de base.html.twig #}
+{% extends "base.html.twig" %}
+
+{#
+
+#}
+{% block title %}{{ title }}{% endblock %}
+
+{# Inserto el cuerpo de la página de inicio #}
+{% block body %}
+    <div class="page-header">
+       <div>
+          <p class="everybrow">IssueFlow</p>
+          <h1>{{ title }}</h1>
+       </div>
+       <p class="counter">{{ tickets|length }} incidencias</p>
+   </div>
+  <div class="ticket-list">
+    {% for ticket in tickets %}
+       
+
+
+       {% include 'ticket/_ticket_card.html.twig' with { ticket: ticket} only %}
+    {% else %}
+    <p>No hay incidencias disponibles</p>
+    {% endfor %}
+  </div>
+{% endblock %}
