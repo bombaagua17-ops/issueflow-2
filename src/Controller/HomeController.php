@@ -8,7 +8,6 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 // Clase de symfony para definir las rutas
 use Symfony\Component\Routing\Attribute\Route;
-// Clase de symfony para asociar un método del controlador con una plantilla Twig
 /* Template: Clase de symfony para asociar un método del controlador con una plantilla Twig,
    de manera que el método devuelva un array con los datos a renderizar en la plantilla 
     Lo necesitamos para poder usar la anotación #[Template('ruta/plantilla.html.twig')] 
@@ -17,10 +16,14 @@ use Symfony\Component\Routing\Attribute\Route;
 */
 //use Symfony\Bridge\Twig\Attribute\Template;
 
-
+/* Para poder usar el método render() de la clase AbstractController,
+   necesitamos primero importar la clase AbstractController, 
+   y luego extender nuestra clase HomeController de ella.
+*/
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
+/* Clase controlador HomeController, extiende de AbstractController para 
+poder usar el método render() */
 final class HomeController extends AbstractController {
 
     /* Definimos una ruta para este controlador.
@@ -32,8 +35,13 @@ final class HomeController extends AbstractController {
     un objeto de la clase Response
     */
     #[Route('/', name: 'app_home', methods: ['GET'])]
+    /* Comentado el #[Template('home/index.html.twig')] porque no lo necesitamos, 
+    ya que estamos usando el método render() de la clase AbstractController */
     //#[Template('home/index.html.twig')]
-    public function index(): Response {
+    public function index(): Response { // En caso de usar #[Template('...')], el tipo de retorno sería array
+        /* Retorno un objeto Response a través del método render().
+        El primer argumento de render corresponde a la plantilla, 
+        y el segundo al array de datos */
         return $this->render('home/index.html.twig', [
             'projectName' => 'IssueFlow',
             'message' => 'Symfony 8.1 ha resuelto la ruta y Twig ha construido la vista'
