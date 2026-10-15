@@ -4,11 +4,18 @@
     Un fragmento es una parte de una página, no una página completa
 #}
 <article class="ticket-card">
-     <div>
+    <div>
         <p class="ticket-id">{{ ticket.id }}</p>
         <h2>{{ ticket.title }}</h2>
-        <p>Prioridad: <strong>{{ ticket.priority }}</strong></p>
-  </div>
+        <p>Prioridad: <strong>{{ ticket.priority.value }}</strong></p>
+        <p>Estado: <strong>{{ ticket.status.value }}</strong></p>
+    </div>
 
-  <a href="{{ path('app_ticket_show', { id: ticket.id}) }}">Ver detalle</a>
-  </article>
+    {#
+        Creamos un enlace para navegar a la página de un ticket en
+        particular, ruta /tickets/{id}
+        app_ticket_show necesita un parámetro {id} uq e se lo enviamos
+        en el segundo argumento de path()
+    #}
+    <a href="{{ path('app_ticket_show', { id: ticket.id }) }}">Ver detalle</a>
+</article>
