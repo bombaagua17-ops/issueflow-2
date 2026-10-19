@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use InvalidArgumentException;
+
 /**
  * Representa una incidencia de IssueFlow como un objeto PHP.
  *
@@ -23,11 +25,25 @@ final class Ticket {
      * Esto evita repetir la declaración y la asignación manual de cada propiedad.
      */
     public function __construct(
-        private string $id,
+        private readonly string $id,
         private string $title,
         private TicketPriority $priority,
         private TicketStatus $status
-    ) {    
+    ) {
+        /* Verificamos la forma del id comparando con una regex (expresiones regulare) */
+        if (preg_match('/^INC-\d{4}$/', $this->id) !== 1) {
+            throw new InvalidArgumentException('El formato del id del ticket no es válido');
+        }
+
+        /* Hacemos un trim (eliminar espacios antes y después) del title */
+        $normalizedTitle = trim($title);
+
+        // Verificamos que la cadena de texto no esté vacía
+        if ($normalizedTitle === '') {
+            throw new InvalidArgumentException('El título no puede estar vacío');
+        }
+
+        $this->title = $normalizedTitle;
     }
 
     /* Crear los getters, para cada una de las propiedades */
@@ -47,14 +63,16 @@ final class Ticket {
         return $this->status;
     }
 
-    /* Crear un método llamado isUrgent() que retorne
-    true si la prioridad es 'urgent', o false en caso contrario */
+    /* Crear un método llamado isUrgent() que invoca a través
+    del atributo priority al método isUrgent() de TicketPriority, el
+    cual retorna true si la prioridad es 'urgent', o false en caso contrario */
     public function isUrgent(): bool {
         return $this->priority->isUrgent();
     }
 
-    /* Crear un método llamado isOpen() que retorne
-    true si la prioridad es 'open', o false en caso contrario */
+    /* Crear un método llamado isOpen() que invoca a través
+    del atributo status al método isOpen() de TicketStatus, el
+    cual retorna true si la prioridad es 'open', o false en caso contrario */
     public function isOpen(): bool {
         return $this->status->isOpen(); 
     }
